@@ -7,7 +7,7 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="btn btn-danger" asp-action="Create">Create New</a>
 </p>
 <table class="table">
     <thead>
@@ -73,9 +73,11 @@
                 @Html.DisplayFor(modelItem => item.Customer.CustomerName)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.OrderDetailId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.OrderDetailId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.OrderDetailId">Delete</a>
+                @*<a asp-action="Edit" asp-route-id="@item.OrderDetailId">Edit</a> |*@
+                <a class="btn btn-info" asp-action="Details" asp-route-id="@item.OrderDetailId">Details</a> |
+                @*<a asp-action="Delete" asp-route-id="@item.OrderDetailId">Delete</a>*@
+                <a class="btn btn-primary"
+                                asp-area="Demos" asp-controller="PaymentTypes" asp-action="Index">PaymentSection</a>
             </td>
         </tr>
 }

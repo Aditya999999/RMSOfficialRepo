@@ -27,8 +27,8 @@
             </div>
             <div class="form-group">
                 <label asp-for="OrderId" class="control-label"></label>
-                <input asp-for="OrderId" class="form-control" />
-                <span asp-validation-for="OrderId" class="text-danger"></span>
+                <select asp-for="OrderId" class ="form-control" asp-items="ViewBag.OrderId"></select>
+                @*<span asp-validation-for="OrderId" class="text-danger"></span>*@
             </div>
             <div class="form-group">
                 <label asp-for="ItemId" class="control-label"></label>
@@ -52,7 +52,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a class="btn btn-success" asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

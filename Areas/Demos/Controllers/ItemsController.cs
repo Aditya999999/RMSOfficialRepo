@@ -62,9 +62,17 @@ namespace Restaurant.Web.Areas.Demos.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(item);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                bool isFound = _context.Items.Any(i => i.ItemName == item.ItemName);
+                if (isFound)
+                {
+                    ModelState.AddModelError("ItemName", "Duplicate Item Found");
+                }
+                else
+                {
+                    _context.Add(item);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
             }
             ViewData["ItemCategoryId"] = new SelectList(_context.ItemCategories, "ItemCategoryId", "ItemCategoryName", item.ItemCategoryId);
             return View(item);
@@ -101,23 +109,33 @@ namespace Restaurant.Web.Areas.Demos.Controllers
 
             if (ModelState.IsValid)
             {
-                try
+                bool isFound = await _context.Items
+                                .AnyAsync(i => i.ItemId != item.ItemId
+                                && i.ItemName != item.ItemName);
+                if (isFound)
                 {
-                    _context.Update(item);
-                    await _context.SaveChangesAsync();
+                    ModelState.AddModelError("ItemName", "Duplicate Item Found");
                 }
-                catch (DbUpdateConcurrencyException)
+                else
                 {
-                    if (!ItemExists(item.ItemId))
+                    try
                     {
-                        return NotFound();
+                        _context.Update(item);
+                        await _context.SaveChangesAsync();
                     }
-                    else
+                    catch (DbUpdateConcurrencyException)
                     {
-                        throw;
+                        if (!ItemExists(item.ItemId))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
+                    return RedirectToAction(nameof(Index));
                 }
-                return RedirectToAction(nameof(Index));
             }
             ViewData["ItemCategoryId"] = new SelectList(_context.ItemCategories, "ItemCategoryId", "ItemCategoryName", item.ItemCategoryId);
             return View(item);

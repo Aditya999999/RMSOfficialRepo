@@ -10,6 +10,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.OpenApi.Models;
+
+// NOTE: add the Nuget Package "Swashbuckle.AspNetCore"
+// to enable Swagger Documentation Generation for OpenAPI documentation.
+
+// Add the assembly attribute, to ensure that the Swagger generates the complete API Documentation.
+[assembly: ApiConventionType(typeof(DefaultApiConventions))]
+
 
 namespace Restaurant.Web
 {
@@ -30,6 +39,21 @@ namespace Restaurant.Web
                 options.UseSqlServer(Configuration.GetConnectionString("MyDefaultConnectionString"));
             });
             services.AddRazorPages();
+
+            // Register the MVC Middleware - NEEDED for Swagger Documentation Middleware 
+            services.AddMvc();
+
+            // Register the Swagger Documentation Generation Middleware Service
+            // URL: https://localhost:xxxx/swagger
+            services.AddSwaggerGen(config =>
+            {
+                config.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "Reataurant Web",
+                    Description = "Restaurant Management System - API version 1"
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -38,6 +62,14 @@ namespace Restaurant.Web
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                // Add the Swagger Middleware
+                app.UseSwagger();
+
+                // Add the Swagger Documentation Generation Middleware
+                app.UseSwaggerUI(config =>
+                {
+                    config.SwaggerEndpoint("/swagger/v1/swagger.json", "RESTAURANT Web API v1");
+                });
             }
             else
             {

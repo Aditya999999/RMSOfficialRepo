@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Restaurant.Web.Models
 {
@@ -29,8 +30,11 @@ namespace Restaurant.Web.Models
 
         #region Navigation to Collections
 
+        [JsonIgnore]                                         // Suppress the information about the FK Collection to the API.
         public ICollection<Order> Orders { get; set; }
+        [JsonIgnore]                                 // Suppress the information about the FK Collection to the API.
         public ICollection<OrderDetail> OrderDetails { get; set; }
+        [JsonIgnore]                                 // Suppress the information about the FK Collection to the API.
         public ICollection<PaymentType> PaymentTypes { get; set; }
 
         #endregion

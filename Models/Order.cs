@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Restaurant.Web.Models
 {
@@ -10,15 +11,15 @@ namespace Restaurant.Web.Models
     public class Order
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        //public Order()
-        //{
-        //    this.OrderDetails = new HashSet<OrderDetail>();
-        //}
+        public Order()
+        {
+            this.OrderDetails = new HashSet<OrderDetail>();
+        }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         virtual public int OrderId { get; set; }
 
-        virtual public System.DateTime OrderDate { get; set; }
+        virtual public System.DateTime OrderDate { get; set; } = DateTime.Now;
 
 
 
@@ -36,6 +37,7 @@ namespace Restaurant.Web.Models
 
         [Required]
         virtual public int CustomerId { get; set; }
+        [JsonIgnore]                                       // Suppress the information about the FK Object to the API.
         [ForeignKey(nameof(Order.CustomerId))]
         
         public Customer Customer { get; set; }
@@ -46,6 +48,7 @@ namespace Restaurant.Web.Models
         [Required]
 
         virtual public int ItemId { get; set; }
+        [JsonIgnore]
 
         [ForeignKey(nameof(Order.ItemId))]
 

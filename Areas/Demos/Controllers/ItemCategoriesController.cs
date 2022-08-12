@@ -60,11 +60,21 @@ namespace Restaurant.Web.Areas.Demos.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ItemCategoryId,ItemCategoryName,IsAvailable,CreatedBy,CreatedDate,UpdatedBy,UpdatedDate,ItemsAvailable,MenuId")] ItemCategory itemCategory)
         {
+           
+
             if (ModelState.IsValid)
             {
-                _context.Add(itemCategory);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                bool isFound = _context.ItemCategories.Any(c => c.ItemCategoryName == itemCategory.ItemCategoryName);
+                if (isFound)
+                {
+                    ModelState.AddModelError("ItemCategoryName", "Duplicate Item Category Found");
+                }
+                else
+                {
+                    _context.Add(itemCategory);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
             }
             ViewData["MenuId"] = new SelectList(_context.Menus, "MenuId", "MenuName", itemCategory.MenuId);
             return View(itemCategory);
@@ -99,25 +109,36 @@ namespace Restaurant.Web.Areas.Demos.Controllers
                 return NotFound();
             }
 
+
             if (ModelState.IsValid)
             {
-                try
+                bool isFound = await _context.ItemCategories
+                                                .AnyAsync(c => c.ItemCategoryId != itemCategory.ItemCategoryId
+                                                && c.ItemCategoryName == itemCategory.ItemCategoryName);
+                if (isFound)
                 {
-                    _context.Update(itemCategory);
-                    await _context.SaveChangesAsync();
+                    ModelState.AddModelError("ItemCategoryName", "Duplicate Item category Found!!");
                 }
-                catch (DbUpdateConcurrencyException)
+                else
                 {
-                    if (!ItemCategoryExists(itemCategory.ItemCategoryId))
+                    try
                     {
-                        return NotFound();
+                        _context.Update(itemCategory);
+                        await _context.SaveChangesAsync();
                     }
-                    else
+                    catch (DbUpdateConcurrencyException)
                     {
-                        throw;
+                        if (!ItemCategoryExists(itemCategory.ItemCategoryId))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
+                    return RedirectToAction(nameof(Index));
                 }
-                return RedirectToAction(nameof(Index));
             }
             ViewData["MenuId"] = new SelectList(_context.Menus, "MenuId", "MenuName", itemCategory.MenuId);
             return View(itemCategory);

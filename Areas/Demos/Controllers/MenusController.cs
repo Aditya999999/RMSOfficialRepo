@@ -59,9 +59,18 @@ namespace Restaurant.Web.Areas.Demos.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(menu);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                bool isFound = _context.Menus.Any(m => m.MenuName == menu.MenuName);
+                if (isFound)
+                {
+                    ModelState.AddModelError("MenuName", "Duplicate Menu Found !!");
+                }
+                else
+                {
+                    _context.Add(menu);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+
             }
             return View(menu);
         }
@@ -96,26 +105,37 @@ namespace Restaurant.Web.Areas.Demos.Controllers
 
             if (ModelState.IsValid)
             {
-                try
+                bool isFound = await _context.Menus
+                    .AnyAsync(m => m.MenuId != menu.MenuId
+                    && m.MenuName == menu.MenuName);
+                if (isFound)
                 {
-                    _context.Update(menu);
-                    await _context.SaveChangesAsync();
+                    ModelState.AddModelError("MenuName", "Duplicate Menu Found!!");
                 }
-                catch (DbUpdateConcurrencyException)
+                else
                 {
-                    if (!MenuExists(menu.MenuId))
+                    try
                     {
-                        return NotFound();
+                        _context.Update(menu);
+                        await _context.SaveChangesAsync();
                     }
-                    else
+                    catch (DbUpdateConcurrencyException)
                     {
-                        throw;
+                        if (!MenuExists(menu.MenuId))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
+                    return RedirectToAction(nameof(Index));
                 }
-                return RedirectToAction(nameof(Index));
             }
-            return View(menu);
-        }
+                return View(menu);
+            }
+        
 
         // GET: Demos/Menus/Delete/5
         public async Task<IActionResult> Delete(int? id)

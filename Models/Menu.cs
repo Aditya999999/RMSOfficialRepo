@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Restaurant.Web.Models
 {
@@ -25,6 +26,7 @@ namespace Restaurant.Web.Models
 
         #region Navigation Properties to the Item Category
 
+        [JsonIgnore]
         public ICollection<ItemCategory> ItemCategories { get; set; }
 
         #endregion

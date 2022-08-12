@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Restaurant.Web.Models
 {
@@ -16,8 +17,9 @@ namespace Restaurant.Web.Models
         virtual public string PaymentTypeName { get; set; }
 
         #region Navigation to the order details
-
+        
         virtual public int OrderDetailId { get; set; }
+        [JsonIgnore]                                       // Suppress the information about the FK Object to the API.
         [ForeignKey(nameof(PaymentType.OrderDetailId))]
 
         virtual public OrderDetail OrderDetail { get; set; }
@@ -28,6 +30,7 @@ namespace Restaurant.Web.Models
         #region Navigation Properties to the Customer Model 
         virtual public int CustomerId { get; set; }
 
+        [JsonIgnore]
         [ForeignKey(nameof(PaymentType.CustomerId))]
 
         public Customer Customer { get; set; }
@@ -36,12 +39,15 @@ namespace Restaurant.Web.Models
         #endregion
 
         #region Navigation properties to the Item Name
-
+        [Display(Name ="Order Date")]
         virtual public int OrderId { get; set; }
+        [JsonIgnore]
         [ForeignKey(nameof(PaymentType.OrderId))]
+        virtual public Order Order { get; set; }
 
         [Required]
         virtual public int ItemId { get; set; }
+        [JsonIgnore]
         [ForeignKey(nameof(PaymentType.ItemId))]
         virtual public Item Item { get; set; }
 

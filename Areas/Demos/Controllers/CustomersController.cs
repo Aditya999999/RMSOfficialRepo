@@ -59,10 +59,12 @@ namespace Restaurant.Web.Areas.Demos.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(customer);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
+                
+                    _context.Add(customer);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+            
             return View(customer);
         }
 
@@ -96,6 +98,12 @@ namespace Restaurant.Web.Areas.Demos.Controllers
 
             if (ModelState.IsValid)
             {
+                bool isFound = await _context.Customers
+                                .AnyAsync(c => c.CreatedBy != customer.CreatedBy);
+                if (isFound)
+                {
+                    ModelState.AddModelError("CustomerCreatedBy", "Same person has already created this.");
+                }
                 try
                 {
                     _context.Update(customer);

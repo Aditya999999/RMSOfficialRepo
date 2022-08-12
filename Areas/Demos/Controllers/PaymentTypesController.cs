@@ -23,7 +23,7 @@ namespace Restaurant.Web.Areas.Demos.Controllers
         // GET: Demos/PaymentTypes
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.PaymentTypes.Include(p => p.Customer).Include(p => p.Item).Include(p => p.OrderDetail);
+            var applicationDbContext = _context.PaymentTypes.Include(p => p.Customer).Include(p => p.Item).Include(p => p.OrderDetail).Include(p => p.Order);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -39,6 +39,7 @@ namespace Restaurant.Web.Areas.Demos.Controllers
                 .Include(p => p.Customer)
                 .Include(p => p.Item)
                 .Include(p => p.OrderDetail)
+                .Include(p => p.Order)
                 .FirstOrDefaultAsync(m => m.PaymentTypeId == id);
             if (paymentType == null)
             {
@@ -54,6 +55,7 @@ namespace Restaurant.Web.Areas.Demos.Controllers
             ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CustomerName");
             ViewData["ItemId"] = new SelectList(_context.Items, "ItemId", "ItemName");
             ViewData["OrderDetailId"] = new SelectList(_context.OrderDetails, "OrderDetailId", "OrderDetailId");
+            ViewData["OrderId"] = new SelectList(_context.Orders, "OrderId", "OrderDate");
             return View();
         }
 
@@ -73,6 +75,7 @@ namespace Restaurant.Web.Areas.Demos.Controllers
             ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CustomerName", paymentType.CustomerId);
             ViewData["ItemId"] = new SelectList(_context.Items, "ItemId", "ItemName", paymentType.ItemId);
             ViewData["OrderDetailId"] = new SelectList(_context.OrderDetails, "OrderDetailId", "OrderDetailId", paymentType.OrderDetailId);
+            ViewData["OrderId"] = new SelectList(_context.Orders, "OrderId", "OrderDate", paymentType.OrderId);
             return View(paymentType);
         }
 
@@ -92,6 +95,7 @@ namespace Restaurant.Web.Areas.Demos.Controllers
             ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CustomerName", paymentType.CustomerId);
             ViewData["ItemId"] = new SelectList(_context.Items, "ItemId", "ItemName", paymentType.ItemId);
             ViewData["OrderDetailId"] = new SelectList(_context.OrderDetails, "OrderDetailId", "OrderDetailId", paymentType.OrderDetailId);
+            ViewData["OrderId"] = new SelectList(_context.Orders, "OrderId", "OrderDate", paymentType.OrderId);
             return View(paymentType);
         }
 
@@ -130,6 +134,7 @@ namespace Restaurant.Web.Areas.Demos.Controllers
             ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CustomerName", paymentType.CustomerId);
             ViewData["ItemId"] = new SelectList(_context.Items, "ItemId", "ItemName", paymentType.ItemId);
             ViewData["OrderDetailId"] = new SelectList(_context.OrderDetails, "OrderDetailId", "OrderDetailId", paymentType.OrderDetailId);
+            ViewData["OrderId"] = new SelectList(_context.Orders, "OrderId", "OrderDate", paymentType.OrderDetailId);
             return View(paymentType);
         }
 

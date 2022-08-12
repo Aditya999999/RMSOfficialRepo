@@ -105,23 +105,33 @@ namespace Restaurant.Web.Areas.Demos.Controllers
 
             if (ModelState.IsValid)
             {
-                try
+                bool isFound = await _context.Orders.AnyAsync(o => o.OrderId != order.OrderId
+                                                                && o.OrderDate == order.OrderDate);
+                if (isFound)
                 {
-                    _context.Update(order);
-                    await _context.SaveChangesAsync();
+                    ModelState.AddModelError("OrderDateTime", "Duplicate order on same date and time Found!!");
                 }
-                catch (DbUpdateConcurrencyException)
+                else
                 {
-                    if (!OrderExists(order.OrderId))
+
+                    try
                     {
-                        return NotFound();
+                        _context.Update(order);
+                        await _context.SaveChangesAsync();
                     }
-                    else
+                    catch (DbUpdateConcurrencyException)
                     {
-                        throw;
+                        if (!OrderExists(order.OrderId))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
+                    return RedirectToAction(nameof(Index));
                 }
-                return RedirectToAction(nameof(Index));
             }
             ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CustomerName", order.CustomerId);
             ViewData["ItemId"] = new SelectList(_context.Items, "ItemId", "ItemName", order.ItemId);

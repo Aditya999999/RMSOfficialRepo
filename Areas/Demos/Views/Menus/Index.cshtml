@@ -11,53 +11,42 @@
     <h4>Please fill your details for further processings by clicking below button &dArr;</h4>
     <a class="btn btn-warning" style="margin-left:710px" asp-area="Demos" asp-controller="Customers" asp-action="Index">FillCustomersDetails</a>
 </p>
-<table class="table" style="background-color:aqua">
-    <thead style="background-color:brown">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.MenuName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedBy)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UpdatedBy)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UpdatedDate)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
+<br/>
+<br/>
+
 @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.MenuName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UpdatedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UpdatedDate)
-            </td>
-            <td>
+     <div class="card" style="background-color:bisque; width:400px; margin-left:400px">
+          <div class="card-header text-center text-danger text-capitalize"><h3>@Html.DisplayNameFor(model => model.MenuName) -   @Html.DisplayFor(modelItem => item.MenuName)<br/></h3></div>
+    
+                <div class="card-body">
+            
+                @Html.DisplayNameFor(model => model.CreatedBy) --  @Html.DisplayFor(modelItem => item.CreatedBy)<br/>
+
+                @Html.DisplayNameFor(model => model.CreatedDate) --  @Html.DisplayFor(modelItem => item.CreatedDate)<br/>
+
+                @Html.DisplayNameFor(model => model.UpdatedBy) -- @Html.DisplayFor(modelItem => item.UpdatedBy)<br/>
+
+                @Html.DisplayNameFor(model => model.UpdatedDate) --  @Html.DisplayFor(modelItem => item.UpdatedDate)<br/>
+
+
+        </div>
+        
+        
+        <div class="card-footer text-center" >
+
+               
+
+               
+
+                
+
+               
+
                 @*<a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.MenuId">Edit</a> |*@
-                <a class="btn btn-success" asp-action="Details" asp-route-id="@item.MenuId">Details</a> |
-               @* <a asp-action="Delete" asp-route-id="@item.MenuId">Delete</a>*@
+                @*<a class="btn btn-success" asp-action="Details" asp-route-id="@item.MenuId">Details</a> |*@
+                @*<a asp-action="Delete" asp-route-id="@item.MenuId">Delete</a>*@
                <a class="btn btn-danger"
                                    asp-area="Demos" asp-controller="ItemCategories" asp-action="Index">ViewItemCategories</a>
-            </td>
-        </tr>
+        </div>  
+</div>
 }
-    </tbody>
-</table>

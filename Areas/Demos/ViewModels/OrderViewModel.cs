@@ -55,7 +55,7 @@ namespace Restaurant.Web.Areas.Demos.ViewModels
             set => base.CustomerId = value;
         }
 
-        [Display(Name = "Items Price")]
+        [Display(Name = "Items Name")]
         [Required]
         public override int ItemId
         {

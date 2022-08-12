@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Restaurant.Web.Models
 {
@@ -32,11 +33,13 @@ namespace Restaurant.Web.Models
 
         #region Navigation Properties to the Item Model
         virtual public int MenuId { get; set; }
+        [JsonIgnore]
 
         [ForeignKey(nameof(ItemCategory.MenuId))]
 
         public Menu Menu { get; set; }
 
+        [JsonIgnore]
         public ICollection<Item> Items { get; set; }
 
         #endregion

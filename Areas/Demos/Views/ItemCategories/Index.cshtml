@@ -4,13 +4,16 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>&clubs;Item Categories&clubs;</h1>
 
-<p>
+@*<p>
     <a asp-action="Create">Create New</a>
-</p>
+</p>*@
+<div class="card" style="background-color:antiquewhite">
+    
 <table class="table">
-    <thead>
+    
+    <thead style="background-color:cadetblue">
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.ItemCategoryName)
@@ -39,8 +42,13 @@
             <th></th>
         </tr>
     </thead>
+   
     <tbody>
+        
 @foreach (var item in Model) {
+    
+
+     
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.ItemCategoryName)
@@ -66,12 +74,24 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Menu.MenuName)
             </td>
+     
+        
             <td>
-                <a asp-action="Edit" asp-route-id="@item.ItemCategoryId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ItemCategoryId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ItemCategoryId">Delete</a>
+               
+                @*<a asp-action="Edit" asp-route-id="@item.ItemCategoryId">Edit</a> |*@
+                <a class="btn btn-warning"asp-action="Details" asp-route-id="@item.ItemCategoryId">Details</a> |
+                @*<a asp-action="Delete" asp-route-id="@item.ItemCategoryId">Delete</a>*@
+                 <a class="btn btn-success"
+                                asp-area="Demos" asp-controller="Items" asp-action="Index">ViewItems</a>
+                               
             </td>
         </tr>
+        
+        
 }
+      
     </tbody>
+    
+
 </table>
+</div>
