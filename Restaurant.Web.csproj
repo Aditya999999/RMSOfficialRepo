@@ -26,6 +26,8 @@
     <Compile Remove="Migrations\20220808130928_Initial.Designer.cs" />
     <Compile Remove="Migrations\20220808131112_Initial.cs" />
     <Compile Remove="Migrations\20220808131112_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20220815152429_AddedPhotoOfItems.cs" />
+    <Compile Remove="Migrations\20220815152429_AddedPhotoOfItems.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

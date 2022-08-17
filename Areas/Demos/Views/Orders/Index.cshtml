@@ -6,8 +6,13 @@
 
 <h1>&bull;&bull;&bull;&bull;&bull;&bull; Orders&bull;&bull;&bull;&bull;</h1>
 
+<p>If you have not registered youself till now please register for placing your Order....
+    <a class="btn btn-warning" style="font-size:30px"
+                                   asp-area="Demos" asp-controller="Customers" asp-action="Index">RegisterCustomer</a>
+</p>
+
 <p>
-    <a class="btn btn-primary" asp-action="Create">Create New</a>
+    <a class="btn btn-primary" asp-action="Create">Create New Order</a>
 </p>
 <table class="table">
     <thead>
@@ -67,7 +72,16 @@
                  <a class="btn btn-success"
                                 asp-area="Demos" asp-controller="OrderDetails" asp-action="Index">OrderDetails</a>
             </td>
+            
         </tr>
+        
+
 }
     </tbody>
 </table>
+<div>
+    
+                <a class="btn btn-primary"
+                                asp-area="Demos" asp-controller="Items" asp-action="Index">SeeItems</a>
+            
+</div>

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Restaurant.Web.Data;
 using Restaurant.Web.Models;
 
@@ -14,10 +15,13 @@ namespace Restaurant.Web.Areas.Demos.Controllers
     public class ItemCategoriesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly ILogger<ItemCategoriesController> _logger;
 
-        public ItemCategoriesController(ApplicationDbContext context)
+        public ItemCategoriesController(ApplicationDbContext context,
+                                        ILogger<ItemCategoriesController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         // GET: Demos/ItemCategories
